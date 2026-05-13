@@ -1,3 +1,28 @@
+const inputDocumento = document.getElementById("numeroDocumento");
+
+
+// SOLO NÚMEROS
+inputDocumento.addEventListener("input", function () {
+
+    this.value = this.value.replace(/\D/g, "");
+
+    const tipo = document.getElementById("tipoDocumento").value;
+
+    // LIMITE DNI Y RUC
+    if (tipo === "dni") {
+
+        this.value = this.value.slice(0, 8);
+
+    } else if (tipo === "ruc") {
+
+        this.value = this.value.slice(0, 11);
+
+    }
+
+});
+
+
+
 document.querySelector("form").addEventListener("submit", function(e) {
 
     e.preventDefault();
@@ -5,11 +30,25 @@ document.querySelector("form").addEventListener("submit", function(e) {
     const tipo = document.getElementById("tipoDocumento").value;
     const numero = document.getElementById("numeroDocumento").value;
 
-    // ocultar resultados primero
+    const mensajeError = document.getElementById("mensajeError");
+
+    // limpiar errores
+    mensajeError.textContent = "";
+
+    // ocultar resultados
     document.getElementById("rucResults").classList.add("hidden");
     document.getElementById("dniResults").classList.add("hidden");
 
+
+
+    // VALIDACIÓN RUC
     if (tipo === "ruc") {
+
+        if (numero.length !== 11) {
+
+            mensajeError.textContent = "El RUC debe tener 11 dígitos";
+            return;
+        }
 
         if (numero === "20142701597") {
 
@@ -24,11 +63,22 @@ document.querySelector("form").addEventListener("submit", function(e) {
 
         } else {
 
-            alert("RUC no encontrado o incorrecto");
+            mensajeError.textContent = "RUC incorrecto o no encontrado";
 
         }
 
-    } else if (tipo === "dni") {
+    }
+
+
+
+    // VALIDACIÓN DNI
+    else if (tipo === "dni") {
+
+        if (numero.length !== 8) {
+
+            mensajeError.textContent = "El DNI debe tener 8 dígitos";
+            return;
+        }
 
         if (numero === "61072842") {
 
@@ -39,17 +89,22 @@ document.querySelector("form").addEventListener("submit", function(e) {
 
         } else {
 
-            alert("DNI no encontrado o incorrecto");
+            mensajeError.textContent = "DNI incorrecto o no encontrado";
 
         }
 
-    } else {
+    }
 
-        alert("Seleccione tipo de documento");
+
+
+    else {
+
+        mensajeError.textContent = "Seleccione un tipo de documento";
 
     }
 
 });
+
 
 
 function limpiarFormulario() {
@@ -57,17 +112,9 @@ function limpiarFormulario() {
     document.getElementById("tipoDocumento").value = "";
     document.getElementById("numeroDocumento").value = "";
 
+    document.getElementById("mensajeError").textContent = "";
+
     document.getElementById("rucResults").classList.add("hidden");
     document.getElementById("dniResults").classList.add("hidden");
-
-    document.getElementById("razonSocial").value = "";
-    document.getElementById("numeroDeLicencia").value = "";
-    document.getElementById("fechaEmitida").value = "";
-    document.getElementById("administrado").value = "";
-    document.getElementById("lugar").value = "";
-    document.getElementById("giro").value = "";
-
-    document.getElementById("nombres").value = "";
-    document.getElementById("apellidos").value = "";
 
 }
